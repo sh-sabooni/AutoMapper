@@ -116,6 +116,7 @@ namespace AutoMapper.UnitTests
                 };
             }
 
+
             protected override void Because_of()
             {
                 var queryable = _products.AsQueryable();
