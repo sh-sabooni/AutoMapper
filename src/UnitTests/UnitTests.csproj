@@ -127,6 +127,7 @@
     <Compile Include="Bug\MultipleTypeConverterInterfaces.cs" />
     <Compile Include="Bug\MultiThreadingIssues.cs" />
     <Compile Include="Bug\NamingConventions.cs" />
+    <Compile Include="Bug\NamingInconsistencyBug.cs" />
     <Compile Include="Bug\NullableBytesAndEnums.cs" />
     <Compile Include="Bug\NullableConverterBug.cs" />
     <Compile Include="Bug\NullablePropertiesBug.cs" />
