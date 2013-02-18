@@ -125,6 +125,7 @@
     <Compile Include="Bug\InheritanceIssue.cs" />
     <Compile Include="Bug\InterfaceSelfMappingBug.cs" />
     <Compile Include="Bug\MemberNamedTypeBug.cs" />
+    <Compile Include="Bug\MissingMemberMessage.cs" />
     <Compile Include="Bug\MultipleInterfaceInheritance.cs" />
     <Compile Include="Bug\MultipleTypeConverterInterfaces.cs" />
     <Compile Include="Bug\MultiThreadingIssues.cs" />
