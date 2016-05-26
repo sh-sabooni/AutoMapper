@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMapper.QueryableExtensions;
 using Xunit;
 using System.Linq;
 using Should;
@@ -9,20 +8,28 @@ namespace AutoMapper.UnitTests.Projection
 {
     namespace PrimitiveArrays
     {
+        using QueryableExtensions;
+
         public class PrimitiveArraysExpressionTest
         {
             [Fact]
             public void Should_not_fail()
             {
-                Mapper.CreateMap<Source, Destination>();
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Source, Destination>();
+                });
 
-                typeof(NullReferenceException).ShouldNotBeThrownBy(() => Mapper.Engine.CreateMapExpression<Source, Destination>());
+                typeof(NullReferenceException).ShouldNotBeThrownBy(() => config.ExpressionBuilder.CreateMapExpression<Source, Destination>());
             }
 
             [Fact]
             public void Should_map_values()
             {
-                Mapper.CreateMap<Source, Destination>();
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Source, Destination>();
+                });
 
                 var sources = new List<Source>
                 {
@@ -33,7 +40,7 @@ namespace AutoMapper.UnitTests.Projection
                     }
                 };
 
-                var expr = sources.AsQueryable().Project().To<Destination>();
+                var expr = sources.AsQueryable().ProjectTo<Destination>(config);
 
                 var result = expr.ToList();
 

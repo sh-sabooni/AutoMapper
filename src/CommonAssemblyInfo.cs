@@ -12,11 +12,4 @@ using System.Runtime.InteropServices;
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: AssemblyVersionAttribute("2.3.0")]
-[assembly: AssemblyFileVersionAttribute("2.3.0.0")]
-[assembly: AssemblyCopyrightAttribute("Copyright Jimmy Bogard 2008-2013")]
-[assembly: AssemblyProductAttribute("AutoMapper")]
-[assembly: AssemblyTrademarkAttribute("AutoMapper")]
-[assembly: AssemblyCompanyAttribute("")]
-[assembly: AssemblyConfigurationAttribute("release")]
-[assembly: AssemblyInformationalVersionAttribute("b21150dddd16bd0a0cd5205b29f0585e2b84961a")]
+[assembly: CLSCompliant(true)]

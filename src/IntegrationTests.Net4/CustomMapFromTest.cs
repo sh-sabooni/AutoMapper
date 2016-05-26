@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
-using AutoMapper.QueryableExtensions;
 using Xunit;
 using Assert = Should.Core.Assertions.Assert;
 using Should;
@@ -12,6 +11,9 @@ namespace AutoMapper.IntegrationTests.Net4
 {
     namespace CustomMapFromTest
     {
+        using AutoMapper.UnitTests;
+        using QueryableExtensions;
+
         public class Customer
         {
             [Key]
@@ -74,16 +76,14 @@ namespace AutoMapper.IntegrationTests.Net4
             }
         }
         
-        public class AutoMapperQueryableExtensionsThrowsNullReferenceExceptionSpec
+        public class AutoMapperQueryableExtensionsThrowsNullReferenceExceptionSpec : AutoMapperSpecBase
         {
-            public AutoMapperQueryableExtensionsThrowsNullReferenceExceptionSpec()
+            protected override MapperConfiguration Configuration => new MapperConfiguration(cfg =>
             {
-                Mapper.CreateMap<Customer, CustomerViewModel>()
-                      .ForMember(x => x.FullAddress,
-                                 o => o.MapFrom(c => c.Address.Street + ", " + c.Address.City + " " + c.Address.State)); 
-
-                Mapper.AssertConfigurationIsValid();
-            }
+                cfg.CreateMap<Customer, CustomerViewModel>()
+                    .ForMember(x => x.FullAddress,
+                        o => o.MapFrom(c => c.Address.Street + ", " + c.Address.City + " " + c.Address.State));
+            });
 
             [Fact]
             public void can_map_with_projection()
@@ -103,7 +103,7 @@ namespace AutoMapper.IntegrationTests.Net4
                         x.FullAddress.ShouldNotBeEmpty();
                     });
 
-                    customerVms = context.Customers.Project().To<CustomerViewModel>().ToList();
+                    customerVms = context.Customers.ProjectTo<CustomerViewModel>(Configuration).ToList();
                     customerVms.ForEach(x =>
                     {
                         x.FullAddress.ShouldNotBeNull();
