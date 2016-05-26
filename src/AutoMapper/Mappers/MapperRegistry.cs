@@ -1,36 +1,57 @@
-using System;
 using System.Collections.Generic;
 
 namespace AutoMapper.Mappers
 {
-    public class MapperRegistry : IMapperRegistry
+    public static class MapperRegistry
     {
+        private static readonly IObjectMapper[] _initialMappers =
+        {
+            new ExpressionMapper(), 
+            new FlagsEnumMapper(),
+            new StringToEnumMapper(), 
+            new EnumToEnumMapper(), 
+            new EnumToUnderlyingTypeMapper(),
+            new MultidimensionalArrayMapper(),
+            new PrimitiveArrayMapper(),
+            new ArrayMapper(),
+            new EnumerableToDictionaryMapper(),
+#if !PORTABLE
+            new NameValueCollectionMapper(),
+#endif
+            new DictionaryMapper(),
+            new ReadOnlyCollectionMapper(),
+            new HashSetMapper(),
+            new CollectionMapper(),
+            new EnumerableMapper(),
+            new StringMapper(),
+            new AssignableMapper(),
+#if !PORTABLE
+            new TypeConverterMapper(),
+#endif
+            new NullableSourceMapper(),
+            new ImplicitConversionOperatorMapper(),
+            new ExplicitConversionOperatorMapper(),
+            new ConvertMapper(),
+            new FromStringDictionaryMapper(),
+            new ToStringDictionaryMapper(),
+            new FromDynamicMapper(),
+            new ToDynamicMapper()
+        };
+
+        private static readonly List<IObjectMapper> _mappers = new List<IObjectMapper>(_initialMappers);
+
         /// <summary>
         /// Extension point for modifying list of object mappers
         /// </summary>
-        public static Func<IEnumerable<IObjectMapper>> AllMappers = () => new IObjectMapper[]
-        {
-            new TypeMapMapper(TypeMapObjectMapperRegistry.AllMappers()),
-            new StringMapper(),
-            new FlagsEnumMapper(),
-            new AssignableMapper(),
-            new EnumMapper(),
-            new PrimitiveArrayMapper(),
-            new ArrayMapper(),
-			new EnumerableToDictionaryMapper(),
-            new DictionaryMapper(),
-            new ReadOnlyCollectionMapper(),
-            new CollectionMapper(),
-            new EnumerableMapper(),
-            new NullableSourceMapper(),
-            new NullableMapper(),
-            new ImplicitConversionOperatorMapper(),
-            new ExplicitConversionOperatorMapper(),
-        };
+        public static IList<IObjectMapper> Mappers => _mappers;
 
-        public IEnumerable<IObjectMapper> GetMappers()
+        /// <summary>
+        /// Reset mapper registry to built-in values
+        /// </summary>
+        public static void Reset()
         {
-            return AllMappers();
+            _mappers.Clear();
+            _mappers.AddRange(_initialMappers);
         }
     }
 }

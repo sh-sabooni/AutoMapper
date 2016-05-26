@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace AutoMapper
+﻿namespace AutoMapper
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Options for a single map operation
     /// </summary>
@@ -14,25 +15,35 @@ namespace AutoMapper
         void ConstructServicesUsing(Func<Type, object> constructor);
 
         /// <summary>
-        /// Create any missing type maps, if found
+        /// Add context items to be accessed at map time inside an <see cref="IValueResolver{TSource, TMember}"/> or <see cref="ITypeConverter{TSource, TDestination}"/>
         /// </summary>
-        bool CreateMissingTypeMaps { get; set; }
+        IDictionary<string, object> Items { get; }
+
+        /// <summary>
+        /// Execute a custom function to the source and/or destination types before member mapping
+        /// </summary>
+        /// <param name="beforeFunction">Callback for the source/destination types</param>
+        void BeforeMap(Action<object, object> beforeFunction);
+
+        /// <summary>
+        /// Execute a custom function to the source and/or destination types after member mapping
+        /// </summary>
+        /// <param name="afterFunction">Callback for the source/destination types</param>
+        void AfterMap(Action<object, object> afterFunction);
     }
 
-    public class MappingOperationOptions : IMappingOperationOptions
+    public interface IMappingOperationOptions<TSource, TDestination> : IMappingOperationOptions
     {
-        private Func<Type, object> _serviceCtor;
+        /// <summary>
+        /// Execute a custom function to the source and/or destination types before member mapping
+        /// </summary>
+        /// <param name="beforeFunction">Callback for the source/destination types</param>
+        void BeforeMap(Action<TSource, TDestination> beforeFunction);
 
-        public Func<Type, object> ServiceCtor
-        {
-            get { return _serviceCtor; }
-        }
-
-        public bool CreateMissingTypeMaps { get; set; }
-
-        public void ConstructServicesUsing(Func<Type, object> constructor)
-        {
-            _serviceCtor = constructor;
-        }
+        /// <summary>
+        /// Execute a custom function to the source and/or destination types after member mapping
+        /// </summary>
+        /// <param name="afterFunction">Callback for the source/destination types</param>
+        void AfterMap(Action<TSource, TDestination> afterFunction);
     }
 }
